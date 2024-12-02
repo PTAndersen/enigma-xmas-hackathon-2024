@@ -1,0 +1,53 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Pet20\\Desktop\\enigma-xmas-hackathon-2024\\blazor\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DA17E3-621D-4D02-9FEF-47168C3615C1}|enigma-xmas-hackathon-2024.csproj|c:\\users\\pet20\\desktop\\enigma-xmas-hackathon-2024\\blazor\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F0DA17E3-621D-4D02-9FEF-47168C3615C1}|enigma-xmas-hackathon-2024.csproj|solutionrelative:pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DA17E3-621D-4D02-9FEF-47168C3615C1}|enigma-xmas-hackathon-2024.csproj|c:\\users\\pet20\\desktop\\enigma-xmas-hackathon-2024\\blazor\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F0DA17E3-621D-4D02-9FEF-47168C3615C1}|enigma-xmas-hackathon-2024.csproj|solutionrelative:wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "index.html",
+              "DocumentMoniker": "C:\\Users\\Pet20\\Desktop\\enigma-xmas-hackathon-2024\\blazor\\wwwroot\\index.html",
+              "RelativeDocumentMoniker": "wwwroot\\index.html",
+              "ToolTip": "C:\\Users\\Pet20\\Desktop\\enigma-xmas-hackathon-2024\\blazor\\wwwroot\\index.html",
+              "RelativeToolTip": "wwwroot\\index.html",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-12-02T12:38:15.451Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Home.razor",
+              "DocumentMoniker": "C:\\Users\\Pet20\\Desktop\\enigma-xmas-hackathon-2024\\blazor\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "Pages\\Home.razor",
+              "ToolTip": "C:\\Users\\Pet20\\Desktop\\enigma-xmas-hackathon-2024\\blazor\\Pages\\Home.razor",
+              "RelativeToolTip": "Pages\\Home.razor",
+              "ViewState": "AgIAAIEAAAAAAAAAAAAAAAUAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-01T16:56:03.133Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

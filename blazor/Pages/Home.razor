@@ -1,0 +1,216 @@
+﻿@page "/"
+@using System.Text
+@using Org.BouncyCastle.Crypto;
+@using Org.BouncyCastle.Crypto.Engines;
+@using Org.BouncyCastle.Crypto.Modes
+@using Org.BouncyCastle.Crypto.Paddings;
+@using Org.BouncyCastle.Crypto.Parameters;
+
+<PageTitle>X-mas Postcard Service</PageTitle>
+<style>
+    body {
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+        background-color: #f4f4f4;
+        background-image: url('https://www.transparenttextures.com/patterns/brick-wall.png');
+        color: #333;
+        text-align: center;
+    }
+
+    h1 {
+        color: #bf211e;
+        font-size: 3em;
+        text-shadow: 2px 2px 4px #4d0000;
+    }
+
+    .container {
+        position: relative;
+        overflow: hidden;
+        width: 1024px;
+        height: 600px;
+    }
+
+    .responsive-iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    canvas {
+        overflow: hidden;
+        display: block;
+    }
+
+    label {
+        display: block;
+        margin: 10px auto 5px;
+        font-weight: bold;
+        color: #055c00;
+    }
+
+    textarea, input, button {
+        font-size: 1.1em;
+        margin: 5px 0 15px;
+    }
+
+    textarea {
+        width: 60%;
+        padding: 10px;
+        border: 2px solid #bf211e;
+        border-radius: 8px;
+        background-color: #fff;
+    }
+
+    input {
+        width: 50%;
+        padding: 8px;
+        border: 2px solid #055c00;
+        border-radius: 8px;
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #bf211e;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px #4d0000;
+    }
+
+        button:hover {
+            background-color: #930000;
+        }
+
+    .postcard {
+        border: 3px dashed #bf211e;
+        background-color: #fff9f1;
+        padding: 15px;
+        margin: 20px auto;
+        width: 60%;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .error {
+        color: red;
+        font-weight: bold;
+    }
+</style>
+
+<h1>X-mas Postcard Service</h1>
+
+<p>As you may have heard, Santa accidentally deleted all christmas postcards this year.</p>
+<p>Use this service to send non-deletable postcards!</p>
+
+<hr />
+
+<h3>Delivery service!</h3>
+<p>Use the application below to send and track cards!</p>
+
+<div class="container">
+    <iframe class="responsive-iframe" src="godot/Godot.html" title="Godot Application"></iframe>
+</div>
+
+<h3>Retrieve a Postcard</h3>
+<div>
+    <label for="encryptedMessage">Order Number:</label>
+    <textarea id="encryptedMessage" @bind="EncryptedMessage" rows="5" cols="40" placeholder="Paste the encrypted order number here"></textarea>
+</div>
+<div>
+    <label for="location">Post Office Location:</label>
+    <input id="location" type="text" @bind="ExpectedLocation" placeholder="Enter the post office location (south pole: -90,0)" />
+</div>
+<div>
+    <button @onclick="RetrievePostcard">Retrieve Postcard</button>
+</div>
+
+@if (DecryptedMessage != null)
+{
+    <div>
+        <h4>Your Postcard:</h4>
+        <div style="border: 2px dashed green; padding: 10px; margin: 10px 0;">
+            <p><strong>Order Number:</strong> @EncryptedMessage </p>
+            <p><strong>Message:</strong> @DecryptedMessage</p>
+        </div>
+    </div>
+}
+else if (ErrorMessage != null)
+{
+    <div>
+        <h4 style="color: red;">Error:</h4>
+        <p>@ErrorMessage</p>
+    </div>
+}
+
+@code {
+    private string EncryptedMessage { get; set; }
+    private string ExpectedLocation { get; set; }
+    private string DecryptedMessage { get; set; }
+    private string ErrorMessage { get; set; }
+
+    private static readonly byte[] Key = Encoding.UTF8.GetBytes("1234567890123456"); // Use a 16, 24, or 32-byte key
+    private static readonly byte[] IV = Encoding.UTF8.GetBytes("1234567890123456");  // Use a 16-byte IV
+
+    private void RetrievePostcard()
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(EncryptedMessage))
+            {
+                ErrorMessage = "Please provide an order number.";
+                DecryptedMessage = null;
+                return;
+            }
+
+            string decrypted = Decrypt(EncryptedMessage);
+
+            if (decrypted.Contains("|"))
+            {
+                string[] parts = decrypted.Split('|');
+                string orderNumber = parts[0];
+                string location = parts[1];
+
+                if (location == ExpectedLocation)
+                {
+                    DecryptedMessage = orderNumber;
+                    ErrorMessage = null;
+                }
+                else
+                {
+                    DecryptedMessage = null;
+                    ErrorMessage = "Post office location does not match.";
+                }
+            }
+            else
+            {
+                DecryptedMessage = null;
+                ErrorMessage = "Invalid order format.";
+            }
+        }
+        catch (Exception ex)
+        {
+            DecryptedMessage = null;
+            ErrorMessage = $"Retrieval failed: {ex.Message}";
+        }
+    }
+
+    private string Decrypt(string encryptedMessage)
+    {
+        byte[] cipherBytes = Convert.FromBase64String(encryptedMessage);
+        byte[] keyBytes = Key;
+        byte[] ivBytes = IV;
+
+        PaddedBufferedBlockCipher cipher = new PaddedBufferedBlockCipher(new CbcBlockCipher(new AesEngine()));
+        cipher.Init(false, new ParametersWithIV(new KeyParameter(keyBytes), ivBytes));
+
+        byte[] outputBytes = new byte[cipher.GetOutputSize(cipherBytes.Length)];
+        int length = cipher.ProcessBytes(cipherBytes, 0, cipherBytes.Length, outputBytes, 0);
+        length += cipher.DoFinal(outputBytes, length);
+
+        return Encoding.UTF8.GetString(outputBytes, 0, length);
+    }
+}
