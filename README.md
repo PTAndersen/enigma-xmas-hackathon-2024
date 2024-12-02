@@ -2,9 +2,9 @@
 
 ## Hackthon info
 
-Organizers: (SDU) Enigma
-Theme: Christmas postcard service
-Duration: 4 hours
+ - **Organizers:** (SDU) Enigma
+ - **Theme:** Christmas postcard service
+ - **Duration:** 4 hours
 
 ## Application
 
